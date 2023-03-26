@@ -3,9 +3,11 @@ import { useEffect, useRef, useState } from 'react'
 import { apiKey, baseUrl } from '../api/config'
 import CardList from '../components/Cards/CardList'
 import Container from '../components/UI/Container/Container'
+import Loader from '../components/UI/Loader/Loader'
+import Error from '../components/UI/Error/Error'
 
 const HomePage = () => {
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [photos, setPhotos] = useState([])
   const [newPhotos, setNewPhotos] = useState(false)
   const isComponentMounted = useRef(false)
@@ -16,6 +18,7 @@ const HomePage = () => {
   const endpoint = `curated?page=${page}&per_page=20`
 
   const getPhotos = async () => {
+    setIsLoading(true)
     try {
       const resp = await fetch(`${baseUrl}/${endpoint}`, {
         headers: {
@@ -29,7 +32,7 @@ const HomePage = () => {
     } catch (e) {
       setError(e.message)
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -47,7 +50,7 @@ const HomePage = () => {
     }
     // chech before loading next page
     if (!newPhotos) return
-    if (loading) return
+    if (isLoading) return
     setPage((prevPage) => prevPage + 1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newPhotos])
@@ -81,9 +84,8 @@ const HomePage = () => {
 
   return (
     <Container>
-      {loading && <p>Loading...</p>}
       {error ? (
-        <p>{error}</p>
+        <Error>{error}</Error>
       ) : (
         <CardList
           data={photos}
@@ -91,6 +93,7 @@ const HomePage = () => {
           favourites={favourites}
         />
       )}
+      {isLoading && <Loader />}
     </Container>
   )
 }
