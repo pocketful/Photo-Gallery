@@ -1,0 +1,54 @@
+@import './variables';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: $background-color;
+  color: $primary-color;
+  font-size: $base-font-size;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: $font-primary;
+  font-weight: $weight-regular;
+  line-height: $base-line-height;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+img {
+  max-width: 100%;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}

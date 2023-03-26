@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { apiKey, baseUrl } from '../api/config'
+import style from './HomePage.module.scss'
 
 const HomePage = () => {
   const [error, setError] = useState('')
@@ -27,7 +28,25 @@ const HomePage = () => {
     getPhotos()
   }, [])
 
-  return <div>HomePage</div>
+  return (
+    <div className="container">
+      {photos.length === 0 && <p>Loading photos...</p>}
+      {error ? (
+        <p>{error}</p>
+      ) : (
+        <div className={style.grid}>
+          {photos?.map((image) => (
+            <div className={style.card} key={image.id}>
+              <img
+                src={image.src.large}
+                alt={image.alt || `a photo by ${image.photographer}`}
+              ></img>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default HomePage
