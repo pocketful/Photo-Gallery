@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-// import jsonData from '../api/data'
 import CardList from '../components/Cards/CardList'
 import Container from '../components/UI/Container/Container'
 import Loader from '../components/UI/Loader/Loader'
@@ -18,12 +17,10 @@ const HomePage = () => {
   const getPhotos = async () => {
     setIsLoading(true)
     const result = await fetchData(`curated?page=${page}&per_page=20`)
-    console.log('result:', result)
     if (result.error) {
       setError(result.error)
     } else {
       setPhotos((prevPhotos) => [...prevPhotos, ...result.photos])
-      // setPhotos(jsonData)
       setNewPhotos(false)
     }
     setIsLoading(false)
@@ -32,27 +29,22 @@ const HomePage = () => {
   // refetch images when page changes
   useEffect(() => {
     getPhotos()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
-  // won't run on initial render
+  // this won't run on initial render
   useEffect(() => {
     if (!isComponentMounted.current) {
       isComponentMounted.current = true
       return
     }
-    // chech before loading next page
+
+    // check before loading next page
     if (!newPhotos) return
     if (isLoading) return
     setPage((prevPage) => prevPage + 1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newPhotos])
 
-  // window.innerHeight - browser window height
-  // window.scrollY - how much px have scrolled
-  // document.body.scrollHeight - height of the doc, all loeaded pages
-
-  // when at the end of the doc (3px sooner)
+  // detect when the user has scrolled to the end of the page and set a flag to load new photos
   const event = () => {
     if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 3) {
       setNewPhotos(true)

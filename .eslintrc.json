@@ -34,7 +34,8 @@
   },
   "ignorePatterns": ["*.scss"],
   "rules": {
-    "no-console": "off",
-    "react/prop-types": 0
+    "no-console": "warn",
+    "react/prop-types": "off",
+    "react-hooks/exhaustive-deps": "off"
   }
 }
