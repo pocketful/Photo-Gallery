@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+// import jsonData from '../api/data'
 import { apiKey, baseUrl } from '../api/config'
 import style from './HomePage.module.scss'
 
@@ -9,7 +10,9 @@ const HomePage = () => {
   const isComponentMounted = useRef(false)
   const [page, setPage] = useState(1)
   const [error, setError] = useState('')
+  const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem('favourites')) || [])
 
+  console.log('favourites', favourites)
   const endpoint = `curated?page=${page}&per_page=20`
 
   const getPhotos = async () => {
@@ -22,6 +25,8 @@ const HomePage = () => {
       const data = await resp.json()
       setPhotos((prevPhotos) => [...prevPhotos, ...data.photos])
       setNewPhotos(false)
+      // setPhotos(jsonData)
+      // setNewPhotos(false)
     } catch (e) {
       setError(e.message)
     } finally {
@@ -63,24 +68,41 @@ const HomePage = () => {
     return () => window.removeEventListener('scroll', event)
   }, [])
 
+  const toggleFavourite = (photoId) => {
+    setFavourites((prevFavourites) => {
+      const isFavourite = prevFavourites.includes(photoId)
+      const newFavourites = isFavourite
+        ? prevFavourites.filter((favourite) => favourite !== photoId)
+        : [...prevFavourites, photoId]
+      localStorage.setItem('favourites', JSON.stringify(newFavourites))
+      return newFavourites
+    })
+  }
+
   return (
     <div className="container">
-      {photos.length === 0 && <p>Loading photos...</p>}
+      {loading && <p>Loading...</p>}
       {error ? (
         <p>{error}</p>
       ) : (
         <div className={style.grid}>
-          {photos?.map((image) => (
-            <div className={style.card} key={image.id}>
+          {photos?.map((photo) => (
+            <div className={style.card} key={photo.id}>
               <img
-                src={image.src.large}
-                alt={image.alt || `a photo by ${image.photographer}`}
+                src={photo.src.large}
+                alt={photo.alt || `a photo by ${photo.photographer}`}
               ></img>
+              <button
+                className={favourites.includes(photo.id) ? `${style.favourite}` : ''}
+                type="submit"
+                onClick={() => toggleFavourite(photo.id)}
+              >
+                Favourite
+              </button>
             </div>
           ))}
         </div>
       )}
-      {loading && <p>Loading...</p>}
     </div>
   )
 }
