@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { apiKey, baseUrl } from '../api/config'
 import style from './HomePage.module.scss'
 
 const HomePage = () => {
   const [loading, setLoading] = useState(false)
   const [photos, setPhotos] = useState([])
+  const [newPhotos, setNewPhotos] = useState(false)
+  const isComponentMounted = useRef(false)
   const [page, setPage] = useState(1)
   const [error, setError] = useState('')
 
   const endpoint = `curated?page=${page}&per_page=20`
 
   const getPhotos = async () => {
-    setLoading(true)
     try {
       const resp = await fetch(`${baseUrl}/${endpoint}`, {
         headers: {
@@ -20,6 +21,7 @@ const HomePage = () => {
       })
       const data = await resp.json()
       setPhotos((prevPhotos) => [...prevPhotos, ...data.photos])
+      setNewPhotos(false)
     } catch (e) {
       setError(e.message)
     } finally {
@@ -32,17 +34,32 @@ const HomePage = () => {
     getPhotos()
   }, [page])
 
+  // won't run on initial render
   useEffect(() => {
-    const event = window.addEventListener('scroll', () => {
-      // window.innerHeight - browser window height
-      // window.scrollY - how much px have scrolled
-      // document.body.scrollHeight - height of the doc, all loeaded pages
+    if (!isComponentMounted.current) {
+      isComponentMounted.current = true
+      return
+    }
+    // chech before loading next page
+    if (!newPhotos) return
+    if (loading) return
+    setPage((prevPage) => prevPage + 1)
+    console.log('run')
+  }, [newPhotos])
 
-      // when at the end of the doc (3px sooner), load next page, but dont fetch if i'm already loading
-      if (!loading && window.innerHeight + window.scrollY >= document.body.scrollHeight - 3) {
-        setPage((prevPage) => prevPage + 1)
-      }
-    })
+  // window.innerHeight - browser window height
+  // window.scrollY - how much px have scrolled
+  // document.body.scrollHeight - height of the doc, all loeaded pages
+
+  // when at the end of the doc (3px sooner)
+  const event = () => {
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 3) {
+      setNewPhotos(true)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', event)
     return () => window.removeEventListener('scroll', event)
   }, [])
 
