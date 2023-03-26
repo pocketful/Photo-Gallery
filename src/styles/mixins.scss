@@ -1,0 +1,11 @@
+@import './variables';
+
+@mixin gap-size($size) {
+  @if $size == small {
+    grid-gap: 20px;
+  } @else if $size == medium {
+    grid-gap: 30px;
+  } @else if $size == large {
+    grid-gap: 40px;
+  }
+}

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 // import jsonData from '../api/data'
 import { apiKey, baseUrl } from '../api/config'
-import style from './HomePage.module.scss'
+import CardList from '../components/Cards/CardList'
+import Container from '../components/UI/Container/Container'
 
 const HomePage = () => {
   const [loading, setLoading] = useState(false)
@@ -12,7 +13,6 @@ const HomePage = () => {
   const [error, setError] = useState('')
   const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem('favourites')) || [])
 
-  console.log('favourites', favourites)
   const endpoint = `curated?page=${page}&per_page=20`
 
   const getPhotos = async () => {
@@ -24,9 +24,8 @@ const HomePage = () => {
       })
       const data = await resp.json()
       setPhotos((prevPhotos) => [...prevPhotos, ...data.photos])
-      setNewPhotos(false)
       // setPhotos(jsonData)
-      // setNewPhotos(false)
+      setNewPhotos(false)
     } catch (e) {
       setError(e.message)
     } finally {
@@ -37,6 +36,7 @@ const HomePage = () => {
   // refetch images when page changes
   useEffect(() => {
     getPhotos()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   // won't run on initial render
@@ -49,7 +49,7 @@ const HomePage = () => {
     if (!newPhotos) return
     if (loading) return
     setPage((prevPage) => prevPage + 1)
-    console.log('run')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newPhotos])
 
   // window.innerHeight - browser window height
@@ -68,7 +68,7 @@ const HomePage = () => {
     return () => window.removeEventListener('scroll', event)
   }, [])
 
-  const toggleFavourite = (photoId) => {
+  const toggleFavouriteHandler = (photoId) => {
     setFavourites((prevFavourites) => {
       const isFavourite = prevFavourites.includes(photoId)
       const newFavourites = isFavourite
@@ -80,30 +80,18 @@ const HomePage = () => {
   }
 
   return (
-    <div className="container">
+    <Container>
       {loading && <p>Loading...</p>}
       {error ? (
         <p>{error}</p>
       ) : (
-        <div className={style.grid}>
-          {photos?.map((photo) => (
-            <div className={style.card} key={photo.id}>
-              <img
-                src={photo.src.large}
-                alt={photo.alt || `a photo by ${photo.photographer}`}
-              ></img>
-              <button
-                className={favourites.includes(photo.id) ? `${style.favourite}` : ''}
-                type="submit"
-                onClick={() => toggleFavourite(photo.id)}
-              >
-                Favourite
-              </button>
-            </div>
-          ))}
-        </div>
+        <CardList
+          data={photos}
+          onToggleFavourite={toggleFavouriteHandler}
+          favourites={favourites}
+        />
       )}
-    </div>
+    </Container>
   )
 }
 

@@ -1,0 +1,19 @@
+@import '/src/styles/media-queries';
+
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 40px 50px;
+
+  @include for(Tablet) {
+    padding: 20px;
+  }
+
+  @include for(TabletP) {
+    padding: 15px;
+  }
+
+  @include for(Phone) {
+    padding: 5px;
+  }
+}

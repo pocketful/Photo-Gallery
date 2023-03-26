@@ -1,0 +1,25 @@
+@import '/src/styles/media-queries';
+@import '/src/styles/mixins';
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 50px;
+  justify-items: center;
+
+  @include for(Desktop) {
+    grid-template-columns: repeat(2, 1fr);
+
+    @include gap-size(large);
+  }
+
+  @include for(Tablet) {
+    @include gap-size(medium);
+  }
+
+  @include for(TabletP) {
+    grid-template-columns: repeat(1, 1fr);
+
+    @include gap-size(small);
+  }
+}
