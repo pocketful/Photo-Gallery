@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 // import jsonData from '../api/data'
-import { apiKey, baseUrl } from '../api/config'
 import CardList from '../components/Cards/CardList'
 import Container from '../components/UI/Container/Container'
 import Loader from '../components/UI/Loader/Loader'
 import Error from '../components/UI/Error/Error'
+import { fetchData } from '../api/fetchData'
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -15,25 +15,18 @@ const HomePage = () => {
   const [error, setError] = useState('')
   const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem('favourites')) || [])
 
-  const endpoint = `curated?page=${page}&per_page=20`
-
   const getPhotos = async () => {
     setIsLoading(true)
-    try {
-      const resp = await fetch(`${baseUrl}/${endpoint}`, {
-        headers: {
-          Authorization: apiKey,
-        },
-      })
-      const data = await resp.json()
-      setPhotos((prevPhotos) => [...prevPhotos, ...data.photos])
+    const result = await fetchData(`curated?page=${page}&per_page=20`)
+    console.log('result:', result)
+    if (result.error) {
+      setError(result.error)
+    } else {
+      setPhotos((prevPhotos) => [...prevPhotos, ...result.photos])
       // setPhotos(jsonData)
       setNewPhotos(false)
-    } catch (e) {
-      setError(e.message)
-    } finally {
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   // refetch images when page changes
