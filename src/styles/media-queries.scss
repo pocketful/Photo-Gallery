@@ -1,0 +1,26 @@
+// screen sizes
+$screen-mobile: 480px;
+$screen-tablet-p: 600px;
+$screen-tablet: 768px;
+$screen-desktop: 992px;
+
+// media queries for screen sizes
+@mixin for($size) {
+  @if $size == Phone {
+    @media (max-width: $screen-mobile) {
+      @content;
+    }
+  } @else if $size == TabletP {
+    @media (max-width: $screen-tablet-p) {
+      @content;
+    }
+  } @else if $size == Tablet {
+    @media (max-width: $screen-tablet) {
+      @content;
+    }
+  } @else if $size == Desktop {
+    @media (max-width: $screen-desktop) {
+      @content;
+    }
+  }
+}

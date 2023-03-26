@@ -1,0 +1,62 @@
+@import './variables';
+@import './media-queries';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: $background-color;
+  color: $primary-color;
+  font-size: $base-font-size;
+  letter-spacing: $base-letter-spacing;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+
+  @include for(Desktop) {
+    font-size: 18px;
+  }
+
+  @include for(Tablet) {
+    font-size: 16px;
+  }
+}
+
+body {
+  min-height: 100vh;
+  font-family: $font-primary;
+  font-weight: $weight-regular;
+  line-height: $base-line-height;
+}
+
+img {
+  max-width: 100%;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: 1.2rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  letter-spacing: inherit;
+}
