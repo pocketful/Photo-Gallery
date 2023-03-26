@@ -3,14 +3,15 @@ import { apiKey, baseUrl } from '../api/config'
 import style from './HomePage.module.scss'
 
 const HomePage = () => {
-  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const [photos, setPhotos] = useState([])
+  const [page, setPage] = useState(1)
+  const [error, setError] = useState('')
 
-  const endpoint = 'curated?page=1&per_page=10'
-  console.log('error: ', error)
-  console.log('photos: ', photos)
+  const endpoint = `curated?page=${page}&per_page=20`
 
   const getPhotos = async () => {
+    setLoading(true)
     try {
       const resp = await fetch(`${baseUrl}/${endpoint}`, {
         headers: {
@@ -18,14 +19,31 @@ const HomePage = () => {
         },
       })
       const data = await resp.json()
-      setPhotos(data.photos)
+      setPhotos((prevPhotos) => [...prevPhotos, ...data.photos])
     } catch (e) {
       setError(e.message)
+    } finally {
+      setLoading(false)
     }
   }
 
+  // refetch images when page changes
   useEffect(() => {
     getPhotos()
+  }, [page])
+
+  useEffect(() => {
+    const event = window.addEventListener('scroll', () => {
+      // window.innerHeight - browser window height
+      // window.scrollY - how much px have scrolled
+      // document.body.scrollHeight - height of the doc, all loeaded pages
+
+      // when at the end of the doc (3px sooner), load next page, but dont fetch if i'm already loading
+      if (!loading && window.innerHeight + window.scrollY >= document.body.scrollHeight - 3) {
+        setPage((prevPage) => prevPage + 1)
+      }
+    })
+    return () => window.removeEventListener('scroll', event)
   }, [])
 
   return (
@@ -45,6 +63,7 @@ const HomePage = () => {
           ))}
         </div>
       )}
+      {loading && <p>Loading...</p>}
     </div>
   )
 }
