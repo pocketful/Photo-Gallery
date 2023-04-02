@@ -13,7 +13,7 @@ const Card = ({ alt, id, photographer, src, url, onToggleFavourite, isFavourite 
           Favourite
         </Button>
       </div>
-      <img src={src.large} alt={alt || `a photo by ${photographer}`}></img>
+      <img src={src.large} className={style.image} alt={alt || `a photo by ${photographer}`}></img>
     </article>
   )
 }

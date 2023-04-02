@@ -1,12 +1,12 @@
 @import '/src/styles/variables';
 
-.loader {
+.wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2rem;
 
-  &__item {
+  .loader {
     animation: spin 1s linear infinite;
     border: 6px solid $secondary-color;
     border-top: 6px solid transparent;
