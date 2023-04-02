@@ -4,11 +4,11 @@ import Card from './Card'
 const CardList = ({ data, favourites, onToggleFavourite }) => {
   return (
     <Grid>
-      {data.map((photo) => {
+      {data.map((photo, idx) => {
         const isFavourite = favourites.includes(photo.id)
         return (
           <Card
-            key={photo.id}
+            key={idx}
             {...photo}
             onToggleFavourite={onToggleFavourite}
             isFavourite={isFavourite}
