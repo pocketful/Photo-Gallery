@@ -5,25 +5,29 @@ import Loader from '../components/UI/Loader/Loader'
 import Error from '../components/UI/Error/Error'
 import { fetchData } from '../api/fetchData'
 
+const PER_PAGE = 20
+
 const HomePage = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [photos, setPhotos] = useState([])
-  const [newPhotos, setNewPhotos] = useState(false)
-  const isComponentMounted = useRef(false)
-  const [page, setPage] = useState(1)
+  const [loadNewPhotos, setLoadNewPhotos] = useState(false)
+  const [page, setPage] = useState(200)
+  const [hasNextPage, setHasNextPage] = useState(false)
   const [error, setError] = useState('')
   const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem('favourites')) || [])
+  const mounted = useRef(false)
 
   const getPhotos = async () => {
-    setIsLoading(true)
-    const result = await fetchData(`curated?page=${page}&per_page=20`)
+    setLoading(true)
+    const result = await fetchData(`curated?page=${page}&per_page=${PER_PAGE}`)
     if (result.error) {
       setError(result.error)
     } else {
       setPhotos((prevPhotos) => [...prevPhotos, ...result.photos])
-      setNewPhotos(false)
+      setHasNextPage(result.next_page)
+      setLoadNewPhotos(false)
     }
-    setIsLoading(false)
+    setLoading(false)
   }
 
   // refetch images when page changes
@@ -33,27 +37,27 @@ const HomePage = () => {
 
   // this won't run on initial render
   useEffect(() => {
-    if (!isComponentMounted.current) {
-      isComponentMounted.current = true
+    if (!mounted.current) {
+      mounted.current = true
       return
     }
 
     // check before loading next page
-    if (!newPhotos) return
-    if (isLoading) return
+    if (!loadNewPhotos) return
+    if (!hasNextPage) return
+    if (loading) return
     setPage((prevPage) => prevPage + 1)
-  }, [newPhotos])
+  }, [loadNewPhotos])
 
-  // detect when the user has scrolled to the end of the page and set a flag to load new photos
-  const event = () => {
+  const loadNewPhotosOnScrollEnd = () => {
     if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 3) {
-      setNewPhotos(true)
+      setLoadNewPhotos(true)
     }
   }
 
   useEffect(() => {
-    window.addEventListener('scroll', event)
-    return () => window.removeEventListener('scroll', event)
+    window.addEventListener('scroll', loadNewPhotosOnScrollEnd)
+    return () => window.removeEventListener('scroll', loadNewPhotosOnScrollEnd)
   }, [])
 
   const toggleFavouriteHandler = (photoId) => {
@@ -69,16 +73,9 @@ const HomePage = () => {
 
   return (
     <Container>
-      {error ? (
-        <Error>{error}</Error>
-      ) : (
-        <CardList
-          data={photos}
-          onToggleFavourite={toggleFavouriteHandler}
-          favourites={favourites}
-        />
-      )}
-      {isLoading && <Loader />}
+      {error && <Error>{error}</Error>}
+      {loading && <Loader />}
+      <CardList data={photos} onToggleFavourite={toggleFavouriteHandler} favourites={favourites} />
     </Container>
   )
 }
