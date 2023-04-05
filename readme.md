@@ -19,7 +19,6 @@ An infinite-scroll web app that lets users browse and favorite photos using the 
 - Pre-commit hook for formatting and linting: [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/okonet/lint-staged)
 - Package manager: [pnpm](https://pnpm.io/)
 
-
 # 🚀 Getting started
 
 ### 🔨 Configure files
@@ -47,7 +46,7 @@ pnpm start
 
 ```
 
- ### 🆚 VS Code integration
+### 🆚 VS Code integration
 
 To enable all app development features, you will need the following VS Code extensions
 
@@ -60,8 +59,7 @@ User or workspace settings in [settings.json](https://code.visualstudio.com/docs
 ```json
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.organizeImports": true
+    "source.fixAll": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true
