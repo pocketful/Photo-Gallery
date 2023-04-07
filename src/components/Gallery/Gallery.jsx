@@ -1,7 +1,6 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchData } from '../../api/fetchData'
-import useEffectAfterMounted from '../../hooks/useEffectAfterMounted'
-import debounceLeadingWithDelayCancel from '../../utilities/debounceLeadingCancel'
+import useInfiniteScroll from '../../hooks/useInfiniteScroll'
 import CardList from '../Cards/CardList'
 import Error from '../UI/Error/Error'
 import Loader from '../UI/Loader/Loader'
@@ -14,9 +13,16 @@ const Gallery = () => {
   const [photos, setPhotos] = useState([])
   const [page, setPage] = useState(1)
   const [hasNextPage, setHasNextPage] = useState(false)
-  const [loadMore, setLoadMore] = useState(false)
   const [error, setError] = useState('')
   const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem('favourites')) || [])
+
+  const fetchMorePhotos = () => {
+    if (hasNextPage && !loading) {
+      setPage((prevPage) => prevPage + 1)
+    }
+  }
+
+  const [setLoadMore] = useInfiniteScroll(fetchMorePhotos)
 
   const fetchPhotos = async () => {
     setLoading(true)
@@ -31,38 +37,13 @@ const Gallery = () => {
         setPhotos(result.photos)
       }
     }
+    setLoadMore(false)
     setLoading(false)
   }
 
   useEffect(() => {
     fetchPhotos()
   }, [page])
-
-  const handleLoadMore = useMemo(
-    () =>
-      debounceLeadingWithDelayCancel(() => {
-        setLoadMore(true)
-      }, 250),
-    [],
-  )
-
-  const handleScrollForLoadMore = () => {
-    const scrolledToBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight
-    if (scrolledToBottom) {
-      handleLoadMore()
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScrollForLoadMore)
-    return () => window.removeEventListener('scroll', handleScrollForLoadMore)
-  }, [])
-
-  useEffectAfterMounted(() => {
-    if (!loadMore || !hasNextPage || loading) return
-    setPage((prevPage) => prevPage + 1)
-    setLoadMore(false)
-  }, [loadMore])
 
   const toggleFavouriteHandler = (photoId) => {
     setFavourites((prevFavourites) => {
