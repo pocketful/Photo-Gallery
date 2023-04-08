@@ -1,7 +1,10 @@
+import useToggleFavourite from '../../hooks/useToggleFavourite'
 import Grid from '../UI/Grid/Grid'
 import Card from './Card'
 
-const CardList = ({ data, favourites, onToggleFavourite }) => {
+const CardList = ({ data }) => {
+  const [favourites, toggleFavourite] = useToggleFavourite()
+
   return (
     <Grid>
       {data.map((photo, idx) => {
@@ -10,7 +13,7 @@ const CardList = ({ data, favourites, onToggleFavourite }) => {
           <Card
             key={idx}
             {...photo}
-            onToggleFavourite={onToggleFavourite}
+            onToggleFavourite={toggleFavourite}
             isFavourite={isFavourite}
           />
         )
