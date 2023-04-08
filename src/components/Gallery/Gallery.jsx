@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { fetchData } from '../../api/fetchData'
 import useInfiniteScroll from '../../hooks/useInfiniteScroll'
+import useLoadItems from '../../hooks/useLoadItems'
 import CardList from '../Cards/CardList'
 import Error from '../UI/Error/Error'
 import Loader from '../UI/Loader/Loader'
@@ -9,41 +9,22 @@ import style from './Gallery.module.scss'
 const PER_PAGE = 20
 
 const Gallery = () => {
-  const [loading, setLoading] = useState(false)
-  const [photos, setPhotos] = useState([])
-  const [page, setPage] = useState(1)
-  const [hasNextPage, setHasNextPage] = useState(false)
-  const [error, setError] = useState('')
   const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem('favourites')) || [])
+  const [page, setPage] = useState(1)
 
-  const fetchMorePhotos = () => {
-    if (hasNextPage && !loading) {
-      setPage((prevPage) => prevPage + 1)
-    }
-  }
+  const itemsFetchURL = `curated?page=${page}&per_page=${PER_PAGE}`
 
-  const [setLoadMore] = useInfiniteScroll(fetchMorePhotos)
+  const { loading, items, hasNextPage, error, fetchItems } = useLoadItems(itemsFetchURL, 'photos')
 
-  const fetchPhotos = async () => {
-    setLoading(true)
-    const result = await fetchData(`curated?page=${page}&per_page=${PER_PAGE}`)
-    if (result.error) {
-      setError(result.error)
-    } else {
-      if (result.next_page) {
-        setHasNextPage(true)
-        setPhotos((prevPhotos) => [...prevPhotos, ...result.photos])
-      } else {
-        setPhotos(result.photos)
-      }
-    }
-    setLoadMore(false)
-    setLoading(false)
+  const loadMoreItems = () => {
+    setPage((prevPage) => prevPage + 1)
   }
 
   useEffect(() => {
-    fetchPhotos()
+    fetchItems()
   }, [page])
+
+  useInfiniteScroll({ loading, hasNextPage, error, onLoadMore: loadMoreItems })
 
   const toggleFavouriteHandler = (photoId) => {
     setFavourites((prevFavourites) => {
@@ -58,9 +39,9 @@ const Gallery = () => {
 
   return (
     <section>
-      {error && <Error>{error}</Error>}
       <h1 className={style.heading}>Photo Gallery</h1>
-      <CardList data={photos} onToggleFavourite={toggleFavouriteHandler} favourites={favourites} />
+      {error && <Error>{error}</Error>}
+      <CardList data={items} onToggleFavourite={toggleFavouriteHandler} favourites={favourites} />
       {loading && <Loader />}
     </section>
   )

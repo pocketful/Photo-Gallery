@@ -1,21 +1,18 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import debounceLeadingWithDelayCancel from '../utilities/debounceLeadingCancel'
-import useEffectAfterMounted from './useEffectAfterMounted'
 
-const useInfiniteScroll = (cb) => {
-  const [loadMore, setLoadMore] = useState(false)
-
+const useInfiniteScroll = ({ loading, hasNextPage, error, onLoadMore }) => {
   const handleLoadMore = useMemo(
     () =>
       debounceLeadingWithDelayCancel(() => {
-        setLoadMore(true)
+        onLoadMore()
       }, 250),
     [],
   )
 
   const handleScrollForLoadMore = () => {
     const scrolledToBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight
-    if (scrolledToBottom) {
+    if (scrolledToBottom && hasNextPage && !loading && !error) {
       handleLoadMore()
     }
   }
@@ -24,14 +21,6 @@ const useInfiniteScroll = (cb) => {
     window.addEventListener('scroll', handleScrollForLoadMore)
     return () => window.removeEventListener('scroll', handleScrollForLoadMore)
   }, [])
-
-  useEffectAfterMounted(() => {
-    if (loadMore) {
-      cb()
-    }
-  }, [loadMore])
-
-  return [setLoadMore]
 }
 
 export default useInfiniteScroll
