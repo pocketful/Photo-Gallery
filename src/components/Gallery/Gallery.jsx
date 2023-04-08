@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useInfiniteScroll from '../../hooks/useInfiniteScroll'
 import useLoadItems from '../../hooks/useLoadItems'
 import CardList from '../Cards/CardList'
@@ -10,19 +10,13 @@ const PER_PAGE = 20
 
 const Gallery = () => {
   const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem('favourites')) || [])
-  const [page, setPage] = useState(1)
 
-  const itemsFetchURL = `curated?page=${page}&per_page=${PER_PAGE}`
+  const itemsFetchURL = `curated?per_page=${PER_PAGE}`
 
-  const { loading, items, hasNextPage, error, fetchItems } = useLoadItems(itemsFetchURL, 'photos')
-
-  const loadMoreItems = () => {
-    setPage((prevPage) => prevPage + 1)
-  }
-
-  useEffect(() => {
-    fetchItems()
-  }, [page])
+  const { loading, items, hasNextPage, error, loadMoreItems } = useLoadItems(
+    itemsFetchURL,
+    'photos',
+  )
 
   useInfiniteScroll({ loading, hasNextPage, error, onLoadMore: loadMoreItems })
 
