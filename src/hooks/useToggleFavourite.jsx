@@ -1,20 +1,18 @@
-import { useState } from 'react'
+import useLocalStorage from './useLocalStorage'
 
 const useToggleFavourite = () => {
-  const [favourites, setFavourites] = useState(JSON.parse(localStorage.getItem('favourites')) || [])
+  const { storedValue: favourites, updateStoredValue } = useLocalStorage('favourites', [])
 
   const toggleFavourite = (id) => {
-    setFavourites((prevFavourites) => {
-      const isFavourite = prevFavourites.includes(id)
-      const newFavourites = isFavourite
-        ? prevFavourites.filter((favourite) => favourite !== id)
-        : [...prevFavourites, id]
-      localStorage.setItem('favourites', JSON.stringify(newFavourites))
-      return newFavourites
-    })
+    const isFavourite = favourites.includes(id)
+
+    const newFavourites = isFavourite
+      ? favourites.filter((favourite) => favourite !== id)
+      : [...favourites, id]
+    updateStoredValue(newFavourites)
   }
 
-  return [favourites, toggleFavourite]
+  return { favourites, toggleFavourite }
 }
 
 export default useToggleFavourite

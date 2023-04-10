@@ -3,8 +3,7 @@ import Grid from '../UI/Grid/Grid'
 import Card from './Card'
 
 const CardList = ({ data }) => {
-  const [favourites, toggleFavourite] = useToggleFavourite()
-
+  const { favourites, toggleFavourite } = useToggleFavourite()
   return (
     <Grid>
       {data.map((photo, idx) => {
