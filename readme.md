@@ -1,11 +1,11 @@
-# Image Gallery
+# Photo Gallery
 
 An infinite-scroll web app that lets users browse and favorite photos using the [Pexels API](https://www.pexels.com/api/).
 
 # 🎨 Main features
 
 - Infinite scroll
-- A possibility to favourite an item (favourites should not be lost on page reload).
+- A possibility to favourite an item
 - Responsive design
 
 # 🔧 Technologies Used
@@ -18,7 +18,6 @@ An infinite-scroll web app that lets users browse and favorite photos using the 
 - Style linting: [Stylelint](https://stylelint.io/)
 - Pre-commit hook for formatting and linting: [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/okonet/lint-staged)
 - Package manager: [pnpm](https://pnpm.io/)
-
 
 # 🚀 Getting started
 
@@ -47,7 +46,7 @@ pnpm start
 
 ```
 
- ### 🆚 VS Code integration
+### 🆚 VS Code integration
 
 To enable all app development features, you will need the following VS Code extensions
 
@@ -60,8 +59,7 @@ User or workspace settings in [settings.json](https://code.visualstudio.com/docs
 ```json
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.organizeImports": true
+    "source.fixAll": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true

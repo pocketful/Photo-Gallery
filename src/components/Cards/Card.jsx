@@ -1,7 +1,7 @@
 import Button from '../UI/Button/Button'
 import style from './Card.module.scss'
 
-const Card = ({ alt, id, photographer, src, url, onToggleFavourite, isFavourite }) => {
+const Card = ({ id, src, photographer, url, alt, onToggleFavourite, isFavourite }) => {
   return (
     <article className={style.card}>
       <div className={style.content}>
@@ -13,7 +13,7 @@ const Card = ({ alt, id, photographer, src, url, onToggleFavourite, isFavourite 
           Favourite
         </Button>
       </div>
-      <img src={src.large} alt={alt || `a photo by ${photographer}`}></img>
+      <img src={src} className={style.photo} alt={alt || `a photo by ${photographer}`}></img>
     </article>
   )
 }
