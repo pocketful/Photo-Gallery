@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchData } from '../api/fetchData'
 
-const useLoadItems = (url, itemsArrName) => {
+const useLoadItems = (url, mapItems) => {
   const [loading, setLoading] = useState(false)
   const [items, setItems] = useState([])
   const [hasNextPage, setHasNextPage] = useState(true)
@@ -11,14 +11,15 @@ const useLoadItems = (url, itemsArrName) => {
   const fetchItems = async () => {
     setLoading(true)
     const result = await fetchData(`${url}&page=${page}`)
+    const mappedItems = mapItems(result)
     if (result.error) {
       setError(result.error)
     } else {
       if (result.next_page) {
-        setItems((prevItems) => [...prevItems, ...result[itemsArrName]])
+        setItems((prevItems) => [...prevItems, ...mappedItems])
       } else {
         setHasNextPage(false)
-        setItems(result[itemsArrName])
+        setItems(mappedItems)
       }
     }
     setLoading(false)
