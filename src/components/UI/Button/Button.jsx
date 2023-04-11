@@ -1,4 +1,5 @@
 import style from './Button.module.scss'
+import PropTypes from 'prop-types'
 
 const Button = ({ children, isFavourite = false, isDisabled = false, onClick }) => {
   return (
@@ -14,3 +15,10 @@ const Button = ({ children, isFavourite = false, isDisabled = false, onClick }) 
 }
 
 export default Button
+
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+  isFavourite: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
+}

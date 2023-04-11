@@ -1,5 +1,6 @@
 import Button from '../UI/Button/Button'
 import style from './Card.module.scss'
+import PropTypes from 'prop-types'
 
 const Card = ({ id, src, photographer, url, alt, onToggleFavourite, isFavourite }) => {
   return (
@@ -19,3 +20,13 @@ const Card = ({ id, src, photographer, url, alt, onToggleFavourite, isFavourite 
 }
 
 export default Card
+
+Card.propTypes = {
+  id: PropTypes.number.isRequired,
+  src: PropTypes.string.isRequired,
+  photographer: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  alt: PropTypes.string,
+  onToggleFavourite: PropTypes.func.isRequired,
+  isFavourite: PropTypes.bool.isRequired,
+}

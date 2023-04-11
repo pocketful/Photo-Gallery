@@ -16,8 +16,9 @@ An infinite-scroll web app that lets users browse and favorite photos using the 
 - Code linting: [ESLint](https://eslint.org/) with [Airbnb Style Guide](https://airbnb.io/javascript/react/)
 - Code formatter: [Prettier](https://prettier.io/)
 - Style linting: [Stylelint](https://stylelint.io/)
-- Pre-commit hook for formatting and linting: [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/okonet/lint-staged)
+- Pre-commit hook for formatting and linting: [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/okonet/lint-staged/)
 - Package manager: [pnpm](https://pnpm.io/)
+- Type checking: [PropTypes](https://github.com/facebook/prop-types/)
 
 # 🚀 Getting started
 
