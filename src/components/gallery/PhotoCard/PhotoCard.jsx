@@ -4,7 +4,7 @@ import style from './PhotoCard.module.scss'
 
 const PhotoCard = ({ id, src, photographer, url, alt, onToggleFavourite, isFavourite }) => {
   return (
-    <article className={style.photo}>
+    <article className={style.card}>
       <div className={style.content}>
         <h2 className={style.description}>
           {url.split('/')[4].split('-').slice(0, -1).join(' ') || alt || 'Amazing world'}

@@ -10,6 +10,9 @@ const Gallery = () => {
   const itemsFetchURL = `curated?per_page=${PER_PAGE}`
 
   const mapPhotos = (fetchResult) => {
+    if (!fetchResult || !fetchResult.photos) {
+      return []
+    }
     return fetchResult.photos.map((photo) => ({
       id: photo.id,
       src: photo.src.medium,
