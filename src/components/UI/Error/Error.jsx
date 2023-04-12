@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import style from './Error.module.scss'
 
 const Error = ({ children }) => {
@@ -5,3 +6,7 @@ const Error = ({ children }) => {
 }
 
 export default Error
+
+Error.propTypes = {
+  children: PropTypes.node.isRequired,
+}
