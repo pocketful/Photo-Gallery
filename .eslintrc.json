@@ -14,6 +14,16 @@
     "plugin:import/recommended",
     "plugin:prettier/recommended"
   ],
+  "plugins": ["testing-library", "jest-dom"],
+  "overrides": [
+    {
+      "files": ["**/__tests__/*.test.jsx"],
+      "extends": ["plugin:testing-library/react", "plugin:jest-dom/recommended"],
+      "rules": {
+        "import/named": "off"
+      }
+    }
+  ],
   "settings": {
     "react": {
       "version": "detect"
@@ -35,7 +45,6 @@
   "ignorePatterns": ["*.scss"],
   "rules": {
     "no-console": "warn",
-    "react/prop-types": "off",
     "react-hooks/exhaustive-deps": "off"
   }
 }
