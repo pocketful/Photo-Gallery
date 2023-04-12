@@ -1,16 +1,16 @@
-import useToggleFavourite from '../../hooks/useToggleFavourite'
-import Grid from '../UI/Grid/Grid'
-import Card from './Card'
 import PropTypes from 'prop-types'
+import useToggleFavourite from '../../../hooks/useToggleFavourite'
+import Grid from '../../UI/Grid/Grid'
+import PhotoCard from '../PhotoCard/PhotoCard'
 
-const CardList = ({ data }) => {
+const PhotoCardList = ({ data }) => {
   const { favourites, toggleFavourite } = useToggleFavourite()
   return (
     <Grid>
       {data.map((photo, idx) => {
         const isFavourite = favourites.includes(photo.id)
         return (
-          <Card
+          <PhotoCard
             key={idx}
             {...photo}
             onToggleFavourite={toggleFavourite}
@@ -22,9 +22,9 @@ const CardList = ({ data }) => {
   )
 }
 
-export default CardList
+export default PhotoCardList
 
-CardList.propTypes = {
+PhotoCardList.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,

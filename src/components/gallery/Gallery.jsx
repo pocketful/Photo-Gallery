@@ -1,9 +1,8 @@
 import useInfiniteScroll from '../../hooks/useInfiniteScroll'
 import useLoadItems from '../../hooks/useLoadItems'
-import CardList from '../Cards/CardList'
 import Error from '../UI/Error/Error'
 import Loader from '../UI/Loader/Loader'
-import style from './Gallery.module.scss'
+import PhotoCardList from './PhotoCardList/PhotoCardList'
 
 const PER_PAGE = 20
 
@@ -29,9 +28,8 @@ const Gallery = () => {
 
   return (
     <section>
-      <h1 className={style.heading}>Photo Gallery</h1>
       {error && <Error>{error}</Error>}
-      <CardList data={items} />
+      <PhotoCardList data={items} />
       {loading && <Loader />}
     </section>
   )

@@ -1,5 +1,5 @@
-import style from './Button.module.scss'
 import PropTypes from 'prop-types'
+import style from './Button.module.scss'
 
 const Button = ({ children, isFavourite = false, isDisabled = false, onClick }) => {
   return (

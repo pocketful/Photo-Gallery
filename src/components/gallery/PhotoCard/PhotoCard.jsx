@@ -1,10 +1,10 @@
-import Button from '../UI/Button/Button'
-import style from './Card.module.scss'
 import PropTypes from 'prop-types'
+import Button from '../../UI/Button/Button'
+import style from './PhotoCard.module.scss'
 
-const Card = ({ id, src, photographer, url, alt, onToggleFavourite, isFavourite }) => {
+const PhotoCard = ({ id, src, photographer, url, alt, onToggleFavourite, isFavourite }) => {
   return (
-    <article className={style.card}>
+    <article className={style.photo}>
       <div className={style.content}>
         <h2 className={style.description}>
           {url.split('/')[4].split('-').slice(0, -1).join(' ') || alt || 'Amazing world'}
@@ -19,9 +19,9 @@ const Card = ({ id, src, photographer, url, alt, onToggleFavourite, isFavourite 
   )
 }
 
-export default Card
+export default PhotoCard
 
-Card.propTypes = {
+PhotoCard.propTypes = {
   id: PropTypes.number.isRequired,
   src: PropTypes.string.isRequired,
   photographer: PropTypes.string.isRequired,
