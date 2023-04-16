@@ -7,11 +7,11 @@ const PhotoCardList = ({ data }) => {
   const { favourites, toggleFavourite } = useToggleFavourite()
   return (
     <Grid>
-      {data.map((photo, idx) => {
+      {data.map((photo) => {
         const isFavourite = favourites.includes(photo.id)
         return (
           <PhotoCard
-            key={idx}
+            key={photo.id}
             {...photo}
             onToggleFavourite={toggleFavourite}
             isFavourite={isFavourite}

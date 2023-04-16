@@ -16,7 +16,11 @@ const useLoadItems = (url, mapItems) => {
       setError(result.error)
     } else {
       if (result.next_page) {
-        setItems((prevItems) => [...prevItems, ...mappedItems])
+        setItems((prevItems) => {
+          const existingIds = prevItems.map((item) => item.id)
+          const uniqueNewItems = mappedItems.filter((item) => !existingIds.includes(item.id))
+          return [...prevItems, ...uniqueNewItems]
+        })
       } else {
         setHasNextPage(false)
         setItems(mappedItems)
