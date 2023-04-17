@@ -2,6 +2,12 @@
 
 An infinite-scroll web app that lets users browse and favorite photos using the [Pexels API](https://www.pexels.com/api/).
 
+# 💻 Demo
+
+[https://photo-gallery-iv.netlify.app/](https://photo-gallery-iv.netlify.app/)
+
+![Website demo](public/images/example.gif)
+
 # 🎨 Main features
 
 - Infinite scroll

@@ -2,7 +2,7 @@
   "root": true,
   "env": {
     "browser": true,
-    "es2021": true
+    "es2022": true
   },
   "extends": [
     "eslint:recommended",
@@ -36,7 +36,7 @@
     }
   },
   "parserOptions": {
-    "ecmaVersion": "latest",
+    "ecmaVersion": 2022,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
@@ -44,7 +44,7 @@
   },
   "ignorePatterns": ["*.scss"],
   "rules": {
-    "no-console": "warn",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
     "react-hooks/exhaustive-deps": "off"
   }
 }
